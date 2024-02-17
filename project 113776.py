@@ -11,8 +11,18 @@ def martingale(target_multiplier, bet_list):
 def betting_bot(target_multiplier, num_bets, initial_bet=10):
     bet_list = [initial_bet]
 
-    for i in range(1, num_bets + 1):
-        # Implement the Martingale strategy (doubling the previous bet)
+    
+    for i in range(1, 3):
+        next_bet = bet_list[-1] * 2
+        bet_list.append(next_bet)
+
+    
+    for i in range(3, 10):
+        next_bet = bet_list[-1] * 2
+        bet_list.append(next_bet)
+
+    
+    for i in range(10, num_bets + 1):
         next_bet = bet_list[-1] * 2
         bet_list.append(next_bet)
 
@@ -34,11 +44,11 @@ def calculate_and_display_results(target_multiplier, num_bets, initial_bet):
     messagebox.showinfo("Results", result_message)
 
 def main():
-    # Create the main window
+    
     root = tk.Tk()
     root.title("Martingale Betting Bot")
 
-    # Create the input fields and buttons
+    
     target_multiplier_label = tk.Label(root, text="Target multiplier:")
     target_multiplier_entry = tk.Entry(root)
 
@@ -54,7 +64,7 @@ def main():
         int(initial_bet_entry.get())
     ))
 
-    # Place the input fields and buttons on the window
+    
     target_multiplier_label.grid(row=0, column=0)
     target_multiplier_entry.grid(row=0, column=1)
 
@@ -66,9 +76,8 @@ def main():
 
     calculate_button.grid(row=3, column=0, columnspan=2)
 
-    # Start the main event loop
+    
     root.mainloop()
 
 if __name__ == "__main__":
     main()
-    

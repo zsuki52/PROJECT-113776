@@ -1,0 +1,83 @@
+"""This is a bit of how I thought it would look,,,of course if you were to use other languages or modules its fine I just want to help slightly with the logic"""
+
+from selenium import webdriver
+import time
+
+def martingale_strategy(initial_bet, growth_numbers, max_balance):
+    current_bet_index = 0
+    balance = 0
+    losses = 0
+    wins = 0
+
+    # Initialize the WebDriver
+    driver = webdriver.Chrome()
+
+    try:
+        # Open the website
+        driver.get('https://betting.com')
+
+        # Find and click on the login button (assuming login is required)
+        login_button = driver.find_element_by_xpath('//button[text()="Login"]')
+        login_button.click()
+
+        # Enter your credentials and submit (replace with actual credentials)
+        username_field = driver.find_element_by_id('username')
+        username_field.send_keys('your_username')
+        password_field = driver.find_element_by_id('password')
+        password_field.send_keys('your_password')
+        login_submit_button = driver.find_element_by_xpath('//button[text()="Login"]')
+        login_submit_button.click()
+
+        # Wait for the login process to complete
+        time.sleep(5)  # You may need to adjust the delay
+
+        # Find and join the game (assuming a button with text 'Join Game' is present)
+        join_game_button = driver.find_element_by_xpath('//button[text()="Join Game"]')
+        join_game_button.click()
+
+        while balance < max_balance:
+            # Place a bet
+            current_bet = growth_numbers[current_bet_index]
+            bet_input = driver.find_element_by_id('bet_input')
+            bet_input.clear()
+            bet_input.send_keys(str(current_bet))
+            bet_button = driver.find_element_by_id('bet_button')
+            bet_button.click()
+            print(f"Placing a bet of {current_bet}")
+
+            # Read the random number from the webpage
+            random_number_element = driver.find_element_by_id('random_number')
+            random_number = float(random_number_element.text)  # Assuming the number is in text format and needs to be converted to float
+
+            # Simulate a win or loss
+            if random_number > 5.00:
+                wins += 1
+                balance += current_bet * random_number
+                current_bet_index = 0  # Reset bet amount after a win
+                print(f"Win! Balance: {balance}")
+            else:
+                losses += 1
+                balance -= current_bet
+                current_bet_index = (current_bet_index + 1) % len(growth_numbers)  # Move to the next growth number
+                print(f"Loss! Balance: {balance}")
+
+            if balance <= 0:
+                # Reset balance and bet amount after reaching 0 balance
+                balance = 0
+                current_bet_index = 0
+
+            # Wait for the next round
+            time.sleep(5)  # Adjust the delay as needed
+
+    finally:
+        # Close the WebDriver
+        driver.quit()
+
+    return wins, losses, balance
+
+# Example usage
+initial_bet = 10
+growth_numbers = [20, 30, 40, 50]  # List of growth numbers
+max_balance = 1000
+wins, losses, final_balance = martingale_strategy(initial_bet, growth_numbers, max_balance)
+print(f"Wins: {wins}, Losses: {losses}, Final Balance: {final_balance}")

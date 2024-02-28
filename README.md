@@ -1,4 +1,8 @@
 # PROJECT-113776
+ok ok i see what you meant however my main objective was first see how the calculation part faired 
+right now working on the bot rate limitation and incorporation  of automation via selenium 
+
+
 """Ok...instead of generating the betting list with the betting bot function...let me provide an optimized betting list...
 original_bet_list = [10,10,10,10,10,20,20,40,40,60,60,80,100,120,160,200,280,320,400,520,640,800,1000,1300,1600,2000,3000,4000,6000,6000\
 ,10000,10000,16000,24000,30000,30000,40000,48000,60000,80000]
